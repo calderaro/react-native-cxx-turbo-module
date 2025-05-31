@@ -13,8 +13,14 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/calderaro/react-native-awesome-library.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm,cpp}"
-  s.private_header_files = "ios/**/*.h"
+  s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{h,hpp,cpp}"
+  s.private_header_files = "ios/**/*.h", "cpp/**/*.{h,hpp}"
+
+  s.pod_target_xcconfig = {
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
+    'CLANG_CXX_LIBRARY' => 'libc++',
+    'OTHER_CPLUSPLUSFLAGS' => '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1'
+  }
 
  install_modules_dependencies(s)
 end

@@ -35,6 +35,7 @@ android {
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
   }
 
+
   buildFeatures {
     buildConfig true
   }
@@ -42,6 +43,12 @@ android {
   buildTypes {
     release {
       minifyEnabled false
+    }
+  }
+  
+  externalNativeBuild {
+    cmake {
+      path "./CMakeLists.txt"
     }
   }
 

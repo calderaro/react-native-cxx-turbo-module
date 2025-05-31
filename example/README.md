@@ -1,97 +1,139 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Awesome Library Example App
 
-# Getting Started
+This example app demonstrates the C++ native library integration with React Native.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features Demonstrated
 
-## Step 1: Start Metro
+### 🧮 C++ Multiplication
+- **Function**: `multiply(a: number, b: number): number`
+- **Description**: Demonstrates basic C++ function integration
+- **Usage**: Enter two numbers and see the result calculated by C++ code
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### 📱 QR Code Generator  
+- **Function**: `encodeQR(text: string): string`
+- **Description**: High-performance QR code generation using C++ QR code library
+- **Output**: Base64-encoded bitmap image that can be displayed as an image
+- **Usage**: Enter any text and generate a QR code
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### 🔗 Chunk QR Encoder
+- **Function**: `encodeQRChunk(text: string): string`  
+- **Description**: Specialized QR code encoding for chunked data
+- **Output**: Base64-encoded bitmap image optimized for chunk encoding
+- **Usage**: Enter data (like hex strings) for specialized QR encoding
 
-```sh
-# Using npm
-npm start
+## How to Run
 
-# OR using Yarn
-yarn start
-```
+1. **Install dependencies**:
+   ```bash
+   yarn install
+   # or
+   npm install
+   ```
 
-## Step 2: Build and run your app
+2. **Install iOS dependencies** (iOS only):
+   ```bash
+   cd ios && pod install && cd ..
+   ```
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+3. **Run the app**:
+   ```bash
+   # iOS
+   yarn ios
+   # or
+   npm run ios
+   
+   # Android  
+   yarn android
+   # or
+   npm run android
+   ```
 
-### Android
+## App Sections
 
-```sh
-# Using npm
-npm run android
+### 1. Header
+- Shows app title and subtitle
+- Indicates this is a C++ native functions demo
 
-# OR using Yarn
-yarn android
-```
+### 2. C++ Multiplication Section
+- Two number input fields
+- Calculate button to trigger C++ multiplication
+- Result display showing the calculation
 
-### iOS
+### 3. QR Code Generator Section
+- Text input for QR code content
+- Generate button to create QR code
+- Displays the generated QR code image
+- Shows the encoded text below the image
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+### 4. Chunk QR Encoder Section  
+- Text input for chunk data
+- Generate button for chunk QR encoding
+- Displays the generated chunk QR code
+- Shows the encoded data below the image
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+### 5. Info Section
+- Explains the technologies used
+- Lists the C++ integration features
 
-```sh
-bundle install
-```
+## UI Features
 
-Then, and every time you update your native dependencies, run:
+- **Modern Design**: Clean, card-based interface with shadows
+- **Interactive Controls**: Responsive buttons and input fields
+- **Error Handling**: Alerts for invalid inputs or errors
+- **Loading States**: Shows loading indication during QR generation
+- **Responsive Images**: QR codes displayed as scalable images
+- **Scrollable Content**: Full content accessible via scroll
 
-```sh
-bundle exec pod install
-```
+## Technical Details
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### C++ Integration
+- The app uses the native library functions through React Native bridges
+- Android: JNI bindings with Kotlin bridge
+- iOS: Objective-C++ bridge
+- Shared C++ codebase for cross-platform functionality
 
-```sh
-# Using npm
-npm run ios
+### QR Code Features
+- **High Performance**: C++ implementation for fast generation
+- **Bitmap Output**: Returns base64-encoded BMP images
+- **Cross Platform**: Same C++ code works on both iOS and Android
+- **Chunked Encoding**: Special encoding for structured data
 
-# OR using Yarn
-yarn ios
-```
+### Error Handling
+- Input validation for numeric fields
+- Try-catch blocks around native function calls
+- User-friendly error messages via alerts
+- Graceful fallbacks for missing data
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Testing the C++ Integration
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+1. **Basic Math**: Test the multiplication function with different numbers
+2. **QR Generation**: Try different text inputs to see QR codes generated
+3. **Chunk Encoding**: Test with hex strings or structured data
+4. **Error Cases**: Try invalid inputs to see error handling
+5. **Performance**: Notice the fast QR code generation speed
 
-## Step 3: Modify your app
+## Troubleshooting
 
-Now that you have successfully run the app, let's make changes!
+### Build Issues
+- Ensure React Native development environment is set up correctly
+- For Android: Make sure Android NDK and CMake are installed
+- For iOS: Ensure Xcode and CocoaPods are installed
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Runtime Issues
+- Check that the native library is properly linked
+- Verify that C++ compilation completed successfully
+- Look at Metro bundler output for any errors
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+### QR Code Display Issues
+- QR codes are returned as data URIs with base64 BMP images
+- If images don't display, check that the base64 data is valid
+- Ensure the Image component can handle data URI sources
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## Next Steps
 
-## Congratulations! :tada:
+- Try modifying the QR code input text
+- Experiment with different calculation values
+- Check the generated QR codes with a QR code scanner app
+- Explore the source code to understand the C++ integration
 
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+For more detailed information about the C++ integration, see the main project README and `CPP_DEVELOPMENT.md`.

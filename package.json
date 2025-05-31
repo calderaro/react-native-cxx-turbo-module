@@ -146,7 +146,8 @@
           "project": "tsconfig.build.json"
         }
       ]
-    ]
+    ],
+    "exclude": "**/{__tests__,__fixtures__,__mocks__}/**"
   },
   "codegenConfig": {
     "name": "AwesomeLibrarySpec",
@@ -154,6 +155,12 @@
     "jsSrcsDir": "src",
     "android": {
       "javaPackageName": "com.awesomelibrary"
+    },
+    "ios": {
+      "modulesConformingToProtocol": "RCTTurboModule",
+      "modulesProvider": {
+        "NativeAwesomeLibrary": "AwesomeLibraryModuleProvider"
+      }
     }
   },
   "create-react-native-library": {
