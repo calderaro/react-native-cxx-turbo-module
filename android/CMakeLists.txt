@@ -1,29 +1,24 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.4.1)
+project(AwesomeLibrary)
 
-# Define the library name here.
-project(awesomelibrary)
+set (CMAKE_VERBOSE_MAKEFILE ON)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_STANDARD 17)
+add_library(
+    react-native-awesome-library
+    STATIC
+    ../cpp/QRCodeModule.cpp
+)
 
-# Only build the C++ code if the codegen target is available
-# This ensures we only build when consumed by an app, not standalone
-if(TARGET react_codegen_AwesomeLibrarySpec)
-    # Add the library
-    add_library(
-            ${CMAKE_PROJECT_NAME}
-            SHARED
-            ../shared/NativeQRCodeModule.cpp
-    )
+# Specifies a path to native header files.
+target_include_directories(
+    react-native-awesome-library
+    PUBLIC
+    ../cpp
+)
 
-    # Include directories for our shared code
-    target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ../shared)
-    
-    # Link with the generated codegen object library
-    target_link_libraries(${CMAKE_PROJECT_NAME} react_codegen_AwesomeLibrarySpec)
-else()
-    # Create a dummy target when codegen is not available
-    add_library(${CMAKE_PROJECT_NAME} INTERFACE)
-    message(STATUS "AwesomeLibrary: Codegen target not available, creating interface library")
-endif()
-
+target_link_libraries(
+    react-native-awesome-library
+    jsi
+    reactnative
+    react_codegen_AwesomeLibrarySpec
+)

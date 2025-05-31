@@ -4,4 +4,4 @@ export interface Spec extends TurboModule {
   readonly reverseString: (input: string) => string;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('NativeQRCodeModule');
+export default TurboModuleRegistry.getEnforcing<Spec>('QRCodeModule');

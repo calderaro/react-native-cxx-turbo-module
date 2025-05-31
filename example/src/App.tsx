@@ -1,84 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Text,
-  View,
   StyleSheet,
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Image,
-  Alert,
   SafeAreaView,
 } from 'react-native';
-import {
-  multiply,
-  encodeQR,
-  encodeQRChunk,
-} from 'react-native-awesome-library';
+import * as AwesomeLibrary from 'react-native-awesome-library';
+
+console.log(AwesomeLibrary);
 
 export default function App() {
-  const [multiplyA, setMultiplyA] = useState('3');
-  const [multiplyB, setMultiplyB] = useState('7');
-  const [multiplyResult, setMultiplyResult] = useState<number | null>(null);
-
-  const [qrText, setQrText] = useState('Hello, World!');
-  const [qrBitmap, setQrBitmap] = useState<string | null>(null);
-
-  const [chunkText, setChunkText] = useState('1234567890ABCDEF');
-  const [chunkBitmap, setChunkBitmap] = useState<string | null>(null);
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleMultiply = () => {
-    try {
-      const a = parseFloat(multiplyA);
-      const b = parseFloat(multiplyB);
-
-      if (isNaN(a) || isNaN(b)) {
-        Alert.alert('Error', 'Please enter valid numbers');
-        return;
-      }
-
-      const result = multiply(a, b);
-      setMultiplyResult(result);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to calculate: ' + error);
-    }
-  };
-
-  const handleGenerateQR = async () => {
-    if (!qrText.trim()) {
-      Alert.alert('Error', 'Please enter text for QR code');
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const bitmap = encodeQR(qrText);
-      setQrBitmap(bitmap);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to generate QR code: ' + error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleGenerateChunkQR = async () => {
-    if (!chunkText.trim()) {
-      Alert.alert('Error', 'Please enter text for chunk QR code');
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const bitmap = encodeQRChunk(chunkText);
-      setChunkBitmap(bitmap);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to generate chunk QR code: ' + error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [inputText, setInputText] = useState<string>('');
+  const [reverseStringResult, setReverseStringResult] = useState<string | null>(
+    null
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,140 +23,26 @@ export default function App() {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>🚀 Awesome Library Demo</Text>
-          <Text style={styles.subtitle}>C++ Native Functions</Text>
-        </View>
+        <TextInput
+          style={styles.textInput}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="Input text"
+          keyboardType="numeric"
+        />
 
-        {/* Multiply Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🧮 C++ Multiplication</Text>
-          <Text style={styles.description}>
-            Demonstrates basic C++ function integration
-          </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            setReverseStringResult(AwesomeLibrary.reverseString(inputText))
+          }
+        >
+          <Text style={styles.buttonText}>Reverse String</Text>
+        </TouchableOpacity>
 
-          <View style={styles.inputRow}>
-            <TextInput
-              style={styles.numberInput}
-              value={multiplyA}
-              onChangeText={setMultiplyA}
-              placeholder="First number"
-              keyboardType="numeric"
-            />
-            <Text style={styles.operator}>×</Text>
-            <TextInput
-              style={styles.numberInput}
-              value={multiplyB}
-              onChangeText={setMultiplyB}
-              placeholder="Second number"
-              keyboardType="numeric"
-            />
-          </View>
-
-          <TouchableOpacity style={styles.button} onPress={handleMultiply}>
-            <Text style={styles.buttonText}>Calculate</Text>
-          </TouchableOpacity>
-
-          {multiplyResult !== null && (
-            <View style={styles.resultContainer}>
-              <Text style={styles.resultText}>
-                Result: {multiplyA} × {multiplyB} = {multiplyResult}
-              </Text>
-            </View>
-          )}
-        </View>
-
-        {/* QR Code Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>📱 QR Code Generator</Text>
-          <Text style={styles.description}>
-            High-performance C++ QR code generation with bitmap output
-          </Text>
-
-          <TextInput
-            style={styles.textInput}
-            value={qrText}
-            onChangeText={setQrText}
-            placeholder="Enter text to encode as QR code"
-            multiline
-          />
-
-          <TouchableOpacity
-            style={[styles.button, isLoading && styles.buttonDisabled]}
-            onPress={handleGenerateQR}
-            disabled={isLoading}
-          >
-            <Text style={styles.buttonText}>
-              {isLoading ? 'Generating...' : 'Generate QR Code'}
-            </Text>
-          </TouchableOpacity>
-
-          {qrBitmap && (
-            <View style={styles.qrContainer}>
-              <Text style={styles.qrLabel}>Generated QR Code:</Text>
-              <Image
-                source={{ uri: qrBitmap }}
-                style={styles.qrImage}
-                resizeMode="contain"
-              />
-              <Text style={styles.qrText}>"{qrText}"</Text>
-            </View>
-          )}
-        </View>
-
-        {/* Chunk QR Code Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🔗 Chunk QR Encoder</Text>
-          <Text style={styles.description}>
-            Specialized QR code encoding for chunked data
-          </Text>
-
-          <TextInput
-            style={styles.textInput}
-            value={chunkText}
-            onChangeText={setChunkText}
-            placeholder="Enter data for chunk encoding (e.g., 1234567890ABCDEF)"
-          />
-
-          <TouchableOpacity
-            style={[styles.button, isLoading && styles.buttonDisabled]}
-            onPress={handleGenerateChunkQR}
-            disabled={isLoading}
-          >
-            <Text style={styles.buttonText}>
-              {isLoading ? 'Generating...' : 'Generate Chunk QR'}
-            </Text>
-          </TouchableOpacity>
-
-          {chunkBitmap && (
-            <View style={styles.qrContainer}>
-              <Text style={styles.qrLabel}>Generated Chunk QR:</Text>
-              <Image
-                source={{ uri: chunkBitmap }}
-                style={styles.qrImage}
-                resizeMode="contain"
-              />
-              <Text style={styles.qrText}>"{chunkText}"</Text>
-            </View>
-          )}
-        </View>
-
-        {/* Info Section */}
-        <View style={styles.infoSection}>
-          <Text style={styles.infoTitle}>💡 About This Demo</Text>
-          <Text style={styles.infoText}>
-            This demo showcases cross-platform C++ integration in React Native
-            using:
-          </Text>
-          <Text style={styles.bulletPoint}>• Shared C++ codebase</Text>
-          <Text style={styles.bulletPoint}>• Android JNI bindings</Text>
-          <Text style={styles.bulletPoint}>• iOS Objective-C++ bridge</Text>
-          <Text style={styles.bulletPoint}>
-            • High-performance QR code generation
-          </Text>
-          <Text style={styles.bulletPoint}>• Base64 bitmap output</Text>
-        </View>
+        <Text style={styles.resultText}>
+          {reverseStringResult ?? 'No result'}
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -333,7 +156,7 @@ const styles = StyleSheet.create({
   resultText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#27ae60',
+    color: 'red',
     textAlign: 'center',
   },
   qrContainer: {

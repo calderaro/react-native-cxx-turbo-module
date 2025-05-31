@@ -1,12 +1,15 @@
+/**
+ * @type {import('@react-native-community/cli-types').UserDependencyConfig}
+ */
 module.exports = {
   dependency: {
     platforms: {
       android: {
-        sourceDir: '../android',
-        cmakeListsPath: '../android/CMakeLists.txt',
+        cmakeListsPath: 'build/generated/source/codegen/jni/CMakeLists.txt',
+        cxxModuleCMakeListsModuleName: 'react-native-awesome-library',
+        cxxModuleCMakeListsPath: 'CMakeLists.txt',
+        cxxModuleHeaderName: 'QRCodeModule',
       },
-      ios: {},
     },
   },
-  assets: [],
 };

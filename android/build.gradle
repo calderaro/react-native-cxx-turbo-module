@@ -15,6 +15,10 @@ buildscript {
   }
 }
 
+def reactNativeArchitectures() {
+  def value = rootProject.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
 
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
@@ -33,6 +37,23 @@ android {
   defaultConfig {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+
+    externalNativeBuild {
+      cmake {
+        cppFlags "-frtti -fexceptions -Wall -fstack-protector-all"
+        arguments "-DANDROID_STL=c++_shared"
+        abiFilters (*reactNativeArchitectures())
+
+        buildTypes {
+          debug {
+            cppFlags "-O1 -g"
+          }
+          release {
+            cppFlags "-O2"
+          }
+        }
+      }
+    }
   }
 
 
@@ -48,7 +69,7 @@ android {
   
   externalNativeBuild {
     cmake {
-      path "./CMakeLists.txt"
+      path "CMakeLists.txt"
     }
   }
 
